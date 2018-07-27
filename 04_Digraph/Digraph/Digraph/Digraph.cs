@@ -187,5 +187,17 @@ namespace Digraph
             BreadthFirstDirectedPaths d = new BreadthFirstDirectedPaths(G, s);
             d.GetShortestPathTo(v, ref path);
         }
+        // --- Cycles
+        public bool IsCycle(Digraph G)
+        {
+            DirectedCycle o = new DirectedCycle(G);
+            return o.IsCycle();
+        }
+        // --- GetCycle
+        public Stack<int> GetCycle(Digraph G)
+        {
+            DirectedCycle o = new DirectedCycle(G);
+            return o.GetCycle();
+        }
     }
 }

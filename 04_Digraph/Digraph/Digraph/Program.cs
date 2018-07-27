@@ -10,49 +10,31 @@ namespace Digraph
     {
         static void Main(string[] args)
         {
-            Digraph d = new Digraph("tinyDG.txt");
+            Digraph G = new Digraph("tinyDG.txt");
 
             //how much vertices?
-            Console.WriteLine("Vertices: " + d.GetVertices());
+            Console.WriteLine("Vertices: " + G.GetVertices());
             //how much edges?
-            Console.WriteLine("Edges: " + d.GetEdges());
+            Console.WriteLine("Edges: " + G.GetEdges());
             // indegree
-            Console.WriteLine("InDegree for 0 vertice: " + d.GetInDegree(0));
+            Console.WriteLine("InDegree for 0 vertice: " + G.GetInDegree(0));
             // outdegree
-            Console.WriteLine("OutDegree for 0 vertice: " + d.GetInDegree(0));
+            Console.WriteLine("OutDegree for 0 vertice: " + G.GetInDegree(0));
             // is v reachible from s ?
-            Console.WriteLine("is 1 reachible from 0: " + d.IsReachible(d, 0, 1)); // True
-            Console.WriteLine("is 6 reachible from 0: " + d.IsReachible(d, 0, 1)); // False
+            Console.WriteLine("is 1 reachible from 0: " + G.IsReachible(G, 0, 1)); // True
+            Console.WriteLine("is 6 reachible from 0: " + G.IsReachible(G, 0, 1)); // False
 
-            int s=0; // start vertex
-            int f=2; // finish vertex
+            int s = 0; // start vertex
+            int f = 2; // finish vertex
 
             // --- DFS
             Console.WriteLine(" --- DFS...");
             // Has path to ?            
-            Console.WriteLine("Has path from "+s+" to "+f+" vertex, DFS? " + d.IsPathToDFS(d, s, f));            
+            Console.WriteLine("Has path from " + s + " to " + f + " vertex, DFS? " + G.IsPathToDFS(G, s, f));
             // This is the path, DFS            
             Console.WriteLine("This is the path, DFS?");
             Stack<int> path = new Stack<int>();
-            d.GetPathToDFS(d, s, f, ref path);
-            if (path.Count != 0)
-            {
-                foreach (int i in path)
-                    Console.WriteLine(" > " + i.ToString());
-            }
-            else
-                Console.WriteLine("no path...");            
-            
-            // --- BFS
-            Console.WriteLine("--- BFS...");
-            // Haspath to
-            Console.WriteLine("Has path from "+s+" to "+f+" vertex, DFS? " + d.IsPathToBFS(d, s, f));
-            // --- shortest distance
-            path.Clear();
-            if (d.IsPathToBFS(d, s, f)) Console.WriteLine("Shortest distance: "+ d.GetShortestDistToBFS(d,s,f));
-            // ---
-            Console.WriteLine("This is the path, DFS?");            
-            d.GetShortestPathToBFS(d, s, f, ref path);
+            G.GetPathToDFS(G, s, f, ref path);
             if (path.Count != 0)
             {
                 foreach (int i in path)
@@ -61,8 +43,37 @@ namespace Digraph
             else
                 Console.WriteLine("no path...");
 
+            // --- BFS
+            Console.WriteLine("--- BFS...");
+            // Haspath to
+            Console.WriteLine("Has path from " + s + " to " + f + " vertex, DFS? " + G.IsPathToBFS(G, s, f));
+            // --- shortest distance
+            path.Clear();
+            if (G.IsPathToBFS(G, s, f)) Console.WriteLine("Shortest distance: " + G.GetShortestDistToBFS(G, s, f));
+            // ---
+            Console.WriteLine("This is the path, DFS?");
+            G.GetShortestPathToBFS(G, s, f, ref path);
+            if (path.Count != 0)
+            {
+                foreach (int i in path)
+                    Console.WriteLine(" > " + i.ToString());
+            }
+            else
+                Console.WriteLine("no path...");
+            //--- Cycles
+            bool isCycle = G.IsCycle(G);
+            Console.WriteLine("Is Cycle? " + isCycle);
+            if (isCycle)
+            {
+                Stack<int> cycle = new Stack<int>();
+                cycle = G.GetCycle(G);
+                foreach (int v in cycle)
+                    Console.WriteLine(v);
+            }
+
+
             // --- just describing the orGraph... toString()
-            Console.WriteLine("ToString(): " + d.ToString());
+            Console.WriteLine("ToString(): " + G.ToString());
 
             Console.ReadLine();
         }

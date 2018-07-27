@@ -46,6 +46,7 @@
     <Compile Include="BreadthFirstDirectedPaths.cs" />
     <Compile Include="DepthFirstDirectedPathes.cs" />
     <Compile Include="Digraph.cs" />
+    <Compile Include="DirectedCycle.cs" />
     <Compile Include="DirectedDFS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
