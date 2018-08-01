@@ -163,9 +163,9 @@ namespace Digraph
         // --- GetPathToDFS
         public void GetPathToDFS(Digraph G, int s, int v, ref Stack<int> path)
         {
-            if (!IsPathToDFS(G,s,v)) return;
+            if (!IsPathToDFS(G, s, v)) return;
             DepthFirstDirectedPathes d = new DepthFirstDirectedPathes(G, s);
-            d.GetPathTo(v, ref path);           
+            d.GetPathTo(v, ref path);
         }
         // --- HasPathToBFS
         public Boolean IsPathToBFS(Digraph G, int s, int v)
@@ -199,5 +199,27 @@ namespace Digraph
             DirectedCycle o = new DirectedCycle(G);
             return o.GetCycle();
         }
+        // --- Different orders...
+        public Queue<int> GetPreOrder(Digraph G)
+        {
+            DigraphTopological o = new DigraphTopological(G);
+            return o.Pre;
+        }        
+        public Queue<int> GetPostOrder(Digraph G)
+        {
+            DigraphTopological o = new DigraphTopological(G);
+            return o.Post;
+        }
+        public Stack<int> GetReversePostOrder(Digraph G)
+        {
+            DigraphTopological o = new DigraphTopological(G);
+            return o.ReversePost;
+        }
+        // --- Topological Order...
+        public Stack<int> GetTopologicalOrder(Digraph G)        
+        {
+            DigraphTopological2 o = new DigraphTopological2(G);
+            return new Stack<int>(o.Order);
+        }        
     }
 }

@@ -11,7 +11,7 @@ namespace Digraph
         static void Main(string[] args)
         {
             Digraph G = new Digraph("tinyDG.txt");
-
+            //Digraph G = new Digraph("tinyDG_noCycles.txt");
             //how much vertices?
             Console.WriteLine("Vertices: " + G.GetVertices());
             //how much edges?
@@ -19,7 +19,7 @@ namespace Digraph
             // indegree
             Console.WriteLine("InDegree for 0 vertice: " + G.GetInDegree(0));
             // outdegree
-            Console.WriteLine("OutDegree for 0 vertice: " + G.GetInDegree(0));
+            Console.WriteLine("OutDegree for 0 vertice: " + G.GetOutDegree(0));
             // is v reachible from s ?
             Console.WriteLine("is 1 reachible from 0: " + G.IsReachible(G, 0, 1)); // True
             Console.WriteLine("is 6 reachible from 0: " + G.IsReachible(G, 0, 1)); // False
@@ -70,10 +70,49 @@ namespace Digraph
                 foreach (int v in cycle)
                     Console.WriteLine(v);
             }
+            // --- Topological
+            
+            Queue<int> preOrder = G.GetPreOrder(G);
+            Console.WriteLine(" ---preOrder");            
+            while (preOrder.Count != 0)
+            {
+                Console.WriteLine(preOrder.Dequeue());
+            }
+            Queue<int> postOrder = G.GetPostOrder(G);
+            Console.WriteLine(" ---postOrder");
+            while (postOrder.Count != 0)
+            {
+                Console.WriteLine(postOrder.Dequeue());
+            }
+            /*
+            Stack<int> reversePost = G.GetReversePostOrder(G);
+            Console.WriteLine(" ---reversePostOrder");
+            while (reversePost.Count != 0)
+            {
+                Console.WriteLine(reversePost.Pop());
+            }
+            */
+            //
+            G = new Digraph("tinyDG_noCycles.txt"); // <<< setting new Graph
+            Console.WriteLine(" --- Topological reversePostOrder, changing to tinyDG_noCycles.txt");            
+            isCycle = G.IsCycle(G);
+            if (!isCycle)
+            {
+                Stack<int> TopologicalOrder = G.GetTopologicalOrder(G);
+                while (TopologicalOrder.Count != 0)
+                {
+                    Console.WriteLine(TopologicalOrder.Pop());
+                }
+            }
+            else
+            {                 
+                if (isCycle) Console.WriteLine("Topological order impossible, there is cycle there... ");
+            }
 
 
             // --- just describing the orGraph... toString()
-            Console.WriteLine("ToString(): " + G.ToString());
+            Console.WriteLine();
+            Console.WriteLine("---ToString(): " + G.ToString());
 
             Console.ReadLine();
         }
