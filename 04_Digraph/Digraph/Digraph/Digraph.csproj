@@ -50,6 +50,7 @@
     <Compile Include="DigraphTopological2.cs" />
     <Compile Include="DirectedCycle.cs" />
     <Compile Include="DirectedDFS.cs" />
+    <Compile Include="KosarajuSCC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

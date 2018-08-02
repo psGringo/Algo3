@@ -9,7 +9,7 @@ namespace Digraph
     class DirectedDFS
     {
         private Boolean[] marked; // marked[v] = true iff v is reachable from source(s)
-        private int Count; // number of vertices reachable from source(s)
+        private int Count; // number of vertices reachable from source(s)        
         // --- constructor, from 1 source
         public DirectedDFS(Digraph G, int s)
         {

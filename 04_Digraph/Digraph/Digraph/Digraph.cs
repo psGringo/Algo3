@@ -20,7 +20,7 @@ namespace Digraph
         public Digraph(int V)
         {
             if (V < 0) throw new ArgumentException("Number of vertices in a Digraph must be nonnegative");
-            this.V = 0;
+            this.V = V;
             this.E = 0;
             indegree = new int[V];
             adj = new Bag<int>[V];
@@ -124,7 +124,7 @@ namespace Digraph
         public Digraph Reverse()
         {
             Digraph reverseGraph = new Digraph(V);
-
+            
             for (int v = 0; v < V; v++)
             {
                 foreach (int w in adj[v])
@@ -220,6 +220,12 @@ namespace Digraph
         {
             DigraphTopological2 o = new DigraphTopological2(G);
             return new Stack<int>(o.Order);
-        }        
+        }
+        // --- Kosaraju
+        public bool IsStronglyConnected(Digraph G, int v, int w)
+        {
+            KosarajuSCC k = new KosarajuSCC(G);
+            return k.IsStronglyConnected(v,w);
+        }
     }
 }

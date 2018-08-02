@@ -10,8 +10,7 @@ namespace Digraph
     {
         static void Main(string[] args)
         {
-            Digraph G = new Digraph("tinyDG.txt");
-            //Digraph G = new Digraph("tinyDG_noCycles.txt");
+            Digraph G = new Digraph("tinyDG.txt");            
             //how much vertices?
             Console.WriteLine("Vertices: " + G.GetVertices());
             //how much edges?
@@ -70,8 +69,13 @@ namespace Digraph
                 foreach (int v in cycle)
                     Console.WriteLine(v);
             }
-            // --- Topological
-            
+            // -- Kosaraju, strongly connected components
+            Console.WriteLine("Kosaraju IsStronglyConnected 0 and 2 ");
+            Console.WriteLine(G.IsStronglyConnected(G,0,2));
+            Console.WriteLine("Kosaraju IsStronglyConnected 0 and 1 ");
+            Console.WriteLine(G.IsStronglyConnected(G, 0, 1));
+
+            // --- Topological            
             Queue<int> preOrder = G.GetPreOrder(G);
             Console.WriteLine(" ---preOrder");            
             while (preOrder.Count != 0)
