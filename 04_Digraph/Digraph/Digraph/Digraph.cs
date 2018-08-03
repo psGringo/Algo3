@@ -29,6 +29,34 @@ namespace Digraph
                 adj[v] = new Bag<int>();
             }
         }
+        /**
+ * Initializes a new digraph that is a deep copy of the specified digraph.
+ *
+ * @param  G the digraph to copy
+ */
+        public Digraph(Digraph G)
+        {
+            this.V= (G.GetVertices());
+            this.E = G.GetEdges();
+            for (int v = 0; v < V; v++)
+                this.indegree[v] = G.GetInDegree(v);
+
+            for (int v = 0; v < G.GetVertices(); v++)
+            {
+                // reverse so that adjacency list is in same order as original
+                Stack<int> reverse = new Stack<int>();
+                foreach (int w in G.adj[v])
+                {
+                    reverse.Push(w);
+                }
+                foreach (int w in reverse)
+                {
+                    adj[v].Push(w);
+                }
+            }
+        }
+
+
         // --- read Graph from file
         public Digraph(string filepath)
         {
@@ -77,6 +105,62 @@ namespace Digraph
             }
             catch (Exception e) { Console.WriteLine("The process failed: {0}", e.ToString()); };
         }
+        //
+        // --- read Graph from file
+        public Digraph(string filepath, bool IsAllowParallelEdgesAndLoops)
+        {
+            try
+            {
+                if (!File.Exists(filepath)) { throw new Exception("no file with such filepath"); }
+                using (StreamReader sr = new StreamReader(filepath))
+                {
+                    int i = 0;
+                    while (sr.Peek() >= 0)
+                    {
+                        // reading number of verticles
+                        if (i == 0)
+                        {
+                            V = Convert.ToInt32(sr.ReadLine());
+                            adj = new Bag<int>[V];
+                            for (int v = 0; v < V; v++)
+                            {
+                                adj[v] = new Bag<int>();
+                            }
+                            indegree = new int[V];
+                            i++;
+                        }
+                        // reading number of edges
+                        else
+                            if (i == 1)
+                        {
+                            E = Convert.ToInt32(sr.ReadLine());
+                            if (E < 0) throw new ArgumentException("number of edges in a Graph must be nonnegative");
+                            i++;
+                        }
+                        else
+                        {
+                            string s = sr.ReadLine();
+                            Char delimiter = ' ';
+                            String[] substrings = s.Split(delimiter);
+                            int v = Convert.ToInt32(substrings[0]);
+                            int w = Convert.ToInt32(substrings[1]);
+                            ValidateVertex(v);
+                            ValidateVertex(w);
+                            if (!IsAllowParallelEdgesAndLoops)
+                            {
+                                if ((IsEdge(v, w)) || (v == w)) {/*do smth*/}
+                                AddEdge(v, w);
+                            }
+                            else
+                            AddEdge(v, w);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception e) { Console.WriteLine("The process failed: {0}", e.ToString()); };
+        }
+
         // --- vertices
         public int GetVertices()
         {
@@ -87,7 +171,44 @@ namespace Digraph
         {
             return E;
         }
-
+        public bool IsEdge(int v,int w)
+        {
+            foreach (int x in adj[v])
+                if (x == w) return true;
+            return false;
+        }
+        // sources, with indegree=0
+        public IEnumerable<int> Sources()
+        {
+            Stack<int> sources = new Stack<int>();
+            for(int v=0;v<V;v++)
+            {
+                if (GetInDegree(v) == 0) sources.Push(v);
+            }
+            return sources;
+        }
+        // sinks, with outdegree=0
+        public IEnumerable<int> Sinks()
+        {
+            Stack<int> sinks = new Stack<int>();
+            for (int v = 0; v < V; v++)
+            {
+                if (GetOutDegree(v) == 0) sinks.Push(v);
+            }
+            return sinks;
+        }
+        // isMap
+        public bool IsMap()
+        {
+            for (int v = 0; v < V; v++)
+            {
+                if (GetOutDegree(v) != 0)
+                {
+                    return false;                                       
+                }
+            }
+            return true;
+        }
         // --- Validation...
         private void ValidateVertex(int v)
         {
@@ -220,6 +341,18 @@ namespace Digraph
         {
             DigraphTopological2 o = new DigraphTopological2(G);
             return new Stack<int>(o.Order);
+        }
+        public bool IsOrderIsTopologicalOrder(Digraph G, Stack<int> SomeOrder)
+        {
+            DigraphTopological2 o = new DigraphTopological2(G);
+            Stack<int> topologicalOrder = new Stack<int>(o.Order);
+            for (int i = 0; i < G.GetVertices(); i++)
+            {
+                int v = SomeOrder.Pop();
+                int w = topologicalOrder.Pop();
+                if (v != w) return false;
+            }
+            return true;              
         }
         // --- Kosaraju
         public bool IsStronglyConnected(Digraph G, int v, int w)

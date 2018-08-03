@@ -22,6 +22,9 @@ namespace Digraph
             // is v reachible from s ?
             Console.WriteLine("is 1 reachible from 0: " + G.IsReachible(G, 0, 1)); // True
             Console.WriteLine("is 6 reachible from 0: " + G.IsReachible(G, 0, 1)); // False
+            // isEdge
+            Console.WriteLine("Is Edge ? 0,12 "+G.IsEdge(0,12));
+            Console.WriteLine("Is Edge ? 0,5 " + G.IsEdge(0, 5));
 
             int s = 0; // start vertex
             int f = 2; // finish vertex
