@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PriorityQueues
 {
-    class MaxPQ<Key> :IEnumerable<Key>
+    class MinPQ<Key> : IEnumerable<Key>
     {
         private Key[] pq; // // store items at indices 1 to n, 0 not use..        
         private int n;   // number of items on priority queue
@@ -20,9 +20,9 @@ namespace PriorityQueues
           *
           * @param  initCapacity the initial capacity of this priority queue
           */
-        public MaxPQ(int initCapacity)
+        public MinPQ(int initCapacity)
         {
-            pq = new Key[initCapacity + 1];            
+            pq = new Key[initCapacity + 1];
             n = 0;
         }
         /**
@@ -32,23 +32,23 @@ namespace PriorityQueues
     * @param  initCapacity the initial capacity of this priority queue
     * @param  comparator the order in which to compare the keys
     */
-        public MaxPQ(int initCapacity, Comparer<Key> comparer)
+        public MinPQ(int initCapacity, Comparer<Key> comparer)
         {
             this.comparer = comparer;
             pq = new Key[initCapacity + 1];
             n = 0;
         }
         // --- one more init
-        public MaxPQ(Comparer<Key> Comparer, int N, Key[] PQ)        
+        public MinPQ(Comparer<Key> Comparer, int N, Key[] PQ)
         {
             this.comparer = Comparer;
             this.pq = PQ;
-            this.n = N;            
+            this.n = N;
         }
         /**
          * Initializes an empty priority queue.
          */
-        public MaxPQ()
+        public MinPQ()
         {
             pq = new Key[1];
             n = 0;
@@ -58,11 +58,11 @@ namespace PriorityQueues
          *
          * @param  comparator the order in which to compare the keys
          */
-        public MaxPQ(Comparer<Key> comparer)
+        public MinPQ(Comparer<Key> comparer)
         {
             this.comparer = comparer;
             pq = new Key[1];
-            n = 0;            
+            n = 0;
         }
 
         /**
@@ -77,7 +77,7 @@ namespace PriorityQueues
             // add x, and percolate it up to maintain heap invariant
             pq[++n] = x;
             Swim(n);
-            Debug.Assert(IsMaxHeap());
+            Debug.Assert(IsMinHeap());
         }
         /**
            * Removes and returns a largest key on this priority queue.
@@ -85,16 +85,16 @@ namespace PriorityQueues
            * @return a largest key on this priority queue
            * @throws NoSuchElementException if this priority queue is empty
            */
-        public Key DelMax()
+        public Key DelMin()
         {
             if (IsEmpty()) throw new ArgumentException("Priority queue underflow");
-            Key max = pq[1];
+            Key min = pq[1];
             Exch(1, n--);
             Sink(1);
             pq[n + 1] = default(Key);// null;     // to avoid loiterig and help with garbage collection
             if ((n > 0) && (n == (pq.Length - 1) / 4)) Resize(pq.Length / 2);
-            Debug.Assert(IsMaxHeap());
-            return max;
+            Debug.Assert(IsMinHeap());
+            return min;
         }
         /**
          * Returns true if this priority queue is empty.
@@ -112,7 +112,7 @@ namespace PriorityQueues
             return n;
         }
         // Returns a largest key on this priority queue.   
-        public Key Max()
+        public Key Min()
         {
             if (IsEmpty()) throw new ArgumentException("Priority queue is empty");
             return pq[1];
@@ -121,7 +121,7 @@ namespace PriorityQueues
         private void Resize(int capacity)
         {
             Debug.Assert(capacity > n);
-            Key[] temp = new Key[capacity]; 
+            Key[] temp = new Key[capacity];
             for (int i = 1; i <= n; i++)
             {
                 temp[i] = pq[i];
@@ -133,7 +133,7 @@ namespace PriorityQueues
          ***************************************************************************/
         private void Swim(int k)
         {
-            while (k > 1 && Less(k / 2, k))
+            while (k > 1 && Greater(k / 2, k))
             {
                 Exch(k, k / 2);
                 k = k / 2;
@@ -145,8 +145,8 @@ namespace PriorityQueues
             while (2 * k <= n)
             {
                 int j = 2 * k;
-                if (j < n && Less(j, j + 1)) j++;
-                if (!Less(k, j)) break;
+                if (j < n && Greater(j, j + 1)) j++;
+                if (!Greater(k, j)) break;
                 Exch(k, j);
                 k = j;
             }
@@ -154,16 +154,16 @@ namespace PriorityQueues
         /***************************************************************************
          * Helper functions for compares and swaps.
          ***************************************************************************/
-        private bool Less(int i, int j)
+        private bool Greater(int i, int j)
         {
             if (comparer == null)
             {
                 //return Comparer<Key>(pq[i]).compareTo(pq[j]) < 0;
-                throw new ArgumentException("comparer is null");                   
+                throw new ArgumentException("comparer is null");
             }
             else
             {
-                return comparer.Compare(pq[i], pq[j]) < 0;
+                return comparer.Compare(pq[i], pq[j]) > 0;
             }
         }
 
@@ -175,19 +175,19 @@ namespace PriorityQueues
         }
 
         // is pq[1..N] a max heap?
-        private bool IsMaxHeap()
+        private bool IsMinHeap()
         {
-            return IsMaxHeap(1);
+            return IsMinHeap(1);
         }
         // is subtree of pq[1..n] rooted at k a max heap?
-        private bool IsMaxHeap(int k)
+        private bool IsMinHeap(int k)
         {
             if (k > n) return true;
             int left = 2 * k;
             int right = 2 * k + 1;
-            if (left <= n && Less(k, left)) return false;
-            if (right <= n && Less(k, right)) return false;
-            return IsMaxHeap(left) && IsMaxHeap(right);
+            if (left <= n && Greater(k, left)) return false;
+            if (right <= n && Greater(k, right)) return false;
+            return IsMinHeap(left) && IsMinHeap(right);
         }
         //
         /*
@@ -196,27 +196,27 @@ namespace PriorityQueues
             return new HeapIterator<Key>();
         }
         */
-        
+
         public IEnumerator<Key> GetEnumerator()
-        {            
-           return new HeapIterator<Key>(comparer, Size(), n,pq);  
+        {
+            return new HeapIterator<Key>(comparer, Size(), n, pq);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
-        {            
+        {
             return GetEnumerator();
         }
-        
+
 
         private class HeapIterator<Key> : IEnumerator<Key>
         {
             public Key[] PQ { get; set; } // // store items at indices 1 to n, 0 not use.. 
-            public int Size { get; set; }            
+            public int Size { get; set; }
             public int N { get; set; }
             public Comparer<Key> Comparer { get; set; }
             //
             private int position = -1;
-            private MaxPQ<Key> copy;                      
+            private MaxPQ<Key> copy;
             public HeapIterator()
             {
                 if (Comparer == null) copy = new MaxPQ<Key>(Size);
@@ -260,14 +260,14 @@ namespace PriorityQueues
 
             public void Reset()
             {
-                position = -1;                
+                position = -1;
             }
             //
             object IEnumerator.Current
             {
                 get
                 {
-                    return Current; 
+                    return Current;
                 }
             }
 
@@ -286,9 +286,9 @@ namespace PriorityQueues
                 }
             }
 
-           
+
         }
-        
+
     }
 
 
