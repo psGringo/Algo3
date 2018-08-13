@@ -39,6 +39,34 @@ namespace WGraph
             else Console.WriteLine("e1>e2");
             Console.WriteLine("Weight of e1 == "+e1.GetWeight());
             Console.WriteLine("Weight of e2 == " + e2.GetWeight());
+            // --- LAZY PRIM
+            Console.WriteLine(" ");
+            Console.WriteLine("LazyPrimMST ");
+            LazyPrimMST lazyPrimMST = new LazyPrimMST(G);
+            Queue<Edge> minSpanningTreeQueue = new Queue<Edge>();
+            minSpanningTreeQueue= (Queue<Edge>)(lazyPrimMST.GetEdges());
+            Console.WriteLine("weight of minimal spanning tree tree is " + lazyPrimMST.GetWeight());
+
+            foreach (Edge e in minSpanningTreeQueue)
+            {
+                int v = e.Either();
+                int w = e.Other(v);
+                Console.WriteLine(v +" - " + w);
+            }
+            // --- PRIM
+            Console.WriteLine(" ");
+            Console.WriteLine("PrimMST ");
+            LazyPrimMST primMST = new LazyPrimMST(G);
+            Queue<Edge> minSpanningTreeQueue2 = new Queue<Edge>();
+            minSpanningTreeQueue2 = (Queue<Edge>)(primMST.GetEdges());
+            Console.WriteLine("weight of minimal spanning tree tree is " + primMST.GetWeight());
+
+            foreach (Edge e in minSpanningTreeQueue2)
+            {
+                int v = e.Either();
+                int w = e.Other(v);
+                Console.WriteLine(v + " - " + w);
+            }
 
             Console.WriteLine(" ");
             Console.WriteLine("String Representation of Graph");

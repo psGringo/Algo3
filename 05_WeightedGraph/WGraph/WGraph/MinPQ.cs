@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PriorityQueues
+namespace WGraph
 {
     class MinPQ<Key> : IEnumerable<Key>
     {

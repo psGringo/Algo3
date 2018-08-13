@@ -74,18 +74,43 @@ namespace PriorityQueues
             iMaxPQ.Insert(7,"E");
             iMaxPQ.Insert(8,"I");
             iMaxPQ.Insert(9,"H");
-            iMaxPQ.Insert(10,"G");
-            //
+            iMaxPQ.Insert(10,"G");            
             Console.WriteLine(" ");
             Console.WriteLine("--- INDEXED Priority Queue Max");
             Console.WriteLine("maxIndex "+iMaxPQ.MaxIndex());
             Console.WriteLine("maxKey " + iMaxPQ.MaxKey());
             Console.WriteLine("keyOf(0) " + iMaxPQ.KeyOf(0));
-
+                                                
             while (!iMaxPQ.IsEmpty())
-            {
-                Console.Write(iMaxPQ.DelMax() + " ");
+            {            
+                iMaxPQ.DelMax(out int i,out string s);
+                Console.Write(i + ":" + s + " ");
             }
+            //--- INDEXED Priority Queue Min            
+            IndexMinPQ<string> iMinPQ = new IndexMinPQ<string>(11, comparer);
+            iMinPQ.Insert(0, "S");
+            iMinPQ.Insert(1, "T");
+            iMinPQ.Insert(2, "R");
+            iMinPQ.Insert(3, "P");
+            iMinPQ.Insert(4, "N");
+            iMinPQ.Insert(5, "O");
+            iMinPQ.Insert(6, "A");
+            iMinPQ.Insert(7, "E");
+            iMinPQ.Insert(8, "I");
+            iMinPQ.Insert(9, "H");
+            iMinPQ.Insert(10, "G");
+            Console.WriteLine(" ");
+            Console.WriteLine("--- INDEXED Priority Queue Min");
+            Console.WriteLine("minIndex " + iMinPQ.MinIndex());
+            Console.WriteLine("minKey " + iMinPQ.MinKey());
+            Console.WriteLine("keyOf(0) " + iMinPQ.KeyOf(0));
+
+            while (!iMinPQ.IsEmpty())
+            {
+                iMinPQ.DelMin(out int i, out string s);
+                Console.Write(i+":"+ s + " ");
+            }
+
             Console.ReadLine();
         }
     }

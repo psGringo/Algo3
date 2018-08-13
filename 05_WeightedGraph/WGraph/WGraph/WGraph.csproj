@@ -45,6 +45,10 @@
     <Compile Include="Bag.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="EdgeWeightedGraph.cs" />
+    <Compile Include="IndexMinPQ.cs" />
+    <Compile Include="LazyPrimMST.cs" />
+    <Compile Include="MinPQ.cs" />
+    <Compile Include="PrimMST.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

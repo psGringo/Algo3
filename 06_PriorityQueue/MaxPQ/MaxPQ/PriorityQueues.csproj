@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F9B378E9-B93D-4DBE-9BDA-42F49603230C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MaxPQ</RootNamespace>
+    <RootNamespace>PriorityQueues</RootNamespace>
     <AssemblyName>MaxPQ</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IndexMaxPQ.cs" />
+    <Compile Include="IndexMinPQ.cs" />
     <Compile Include="MaxPQ.cs" />
     <Compile Include="MinPQ.cs" />
     <Compile Include="Program.cs" />

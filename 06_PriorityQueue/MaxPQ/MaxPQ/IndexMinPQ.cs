@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace PriorityQueues
 {
-    class IndexMaxPQ<Key> : IEnumerable<Key>  //Maximum-oriented indexed PQ implementation using a binary heap.
+    class IndexMinPQ<Key> : IEnumerable<Key>  //Minimum-oriented indexed PQ implementation using a binary heap.
     {
+        private int maxN;        // max number of elements in PQ
         private int n;           // number of elements on PQ
         private int[] pq;        // binary heap using 1-based indexing
         private int[] qp;        // inverse of pq - qp[pq[i]] = pq[qp[i]] = i
@@ -17,8 +18,9 @@ namespace PriorityQueues
         private Comparer<Key> comparer;
 
         // Initializes an empty indexed priority queue with indices between 0 and maxN-1
-        public IndexMaxPQ(int maxN, Comparer<Key> comparer)
+        public IndexMinPQ(int maxN, Comparer<Key> comparer)
         {
+            this.maxN = maxN;
             if (maxN < 0) throw new ArgumentException();
             n = 0;
             keys = new Key[maxN + 1];    // make this of length maxN??
@@ -36,6 +38,7 @@ namespace PriorityQueues
         // Contains
         public bool Contains(int i)
         {
+            if (i < 0 || i >= maxN) throw new ArgumentException("wrong index");
             return qp[i] != -1;
         }
         // Size
@@ -44,18 +47,18 @@ namespace PriorityQueues
             return n;
         }
         //
-        public int MaxIndex()
+        public int MinIndex()
         {
             if (n == 0) throw new ArgumentException("Priority queue underflow");
             return pq[1];
         }
-        public Key MaxKey()
+        public Key MinKey()
         {
             if (n == 0) throw new ArgumentException("Priority queue underflow");
             return keys[pq[1]];
         }
         // Removes a maximum key and returns its associated index.
-        public void DelMax(out int index, out Key key)
+        public void DelMin(out int index, out Key key)
         {
             if (n == 0) throw new ArgumentException("Priority queue underflow");
             int min = pq[1];
@@ -74,6 +77,7 @@ namespace PriorityQueues
         // Associate key with index i
         public void Insert(int i, Key key)
         {
+            if (i < 0 || i > maxN) throw new ArgumentException("Wrong index");
             if (Contains(i)) throw new ArgumentException("index is already in the priority queue");
             n++;
             qp[i] = n;
@@ -84,6 +88,7 @@ namespace PriorityQueues
         //
         public Key KeyOf(int i)
         {
+            if (i < 0 || i > maxN) throw new ArgumentException("Wrong index");
             if (!Contains(i)) throw new ArgumentException("index is not in the priority queue");
             else
                 return keys[i];
@@ -91,6 +96,7 @@ namespace PriorityQueues
         //
         public void ChangeKey(int i, Key key)
         {
+            if (i < 0 || i > maxN) throw new ArgumentException("Wrong index");
             if (!Contains(i)) throw new ArgumentException("index is not in the priority queue");
             keys[i] = key;
             Swim(qp[i]);
@@ -99,25 +105,28 @@ namespace PriorityQueues
         // Increase the key associated with index {@code i} to the specified value.
         public void IncreaseKey(int i, Key key)
         {
+            if (i < 0 || i > maxN) throw new ArgumentException("Wrong index");
             if (!Contains(i)) throw new ArgumentException("index is not in the priority queue");
             //if (keys[i].compareTo(key) >= 0)
             if (comparer.Compare(keys[i], key) < 0)
                 throw new ArgumentException("Calling increaseKey() with given argument would not strictly increase the key");
             keys[i] = key;
-            Swim(qp[i]);
+            Sink(qp[i]);
         }
         // Decrease the key associated with index {@code i} to the specified value.
         public void DecreaseKey(int i, Key key)
         {
+            if (i < 0 || i > maxN) throw new ArgumentException("Wrong index");
             if (!Contains(i)) throw new ArgumentException("index is not in the priority queue");
             if (comparer.Compare(keys[i], key) > 0)
                 throw new ArgumentException("Calling decreaseKey() with given argument would not strictly decrease the key");
-            keys[i] = key;
-            Sink(qp[i]);
+            keys[i] = key;            
+            Swim(qp[i]);
         }
         // Remove the key on the priority queue associated with index
         public void Delete(int i)
         {
+            if (i < 0 || i > maxN) throw new ArgumentException("Wrong index");
             if (!Contains(i)) throw new ArgumentException("index is not in the priority queue");
             int index = qp[i];
             Exch(index, n--);
@@ -129,10 +138,9 @@ namespace PriorityQueues
         /***************************************************************************
          * General helper functions.
          ***************************************************************************/
-        private bool Less(int i, int j)
-        {
-            // return keys[pq[i]].CompareTo(keys[pq[j]]) < 0;
-            return comparer.Compare(keys[pq[i]], keys[pq[j]]) < 0;
+        private bool Greater(int i, int j)
+        {            
+            return comparer.Compare(keys[pq[i]], keys[pq[j]]) > 0;
         }
 
         private void Exch(int i, int j)
@@ -150,7 +158,7 @@ namespace PriorityQueues
          ***************************************************************************/
         private void Swim(int k)
         {
-            while (k > 1 && Less(k / 2, k))
+            while (k > 1 && Greater(k / 2, k))
             {
                 Exch(k, k / 2);
                 k = k / 2;
@@ -162,19 +170,17 @@ namespace PriorityQueues
             while (2 * k <= n)
             {
                 int j = 2 * k;
-                if (j < n && Less(j, j + 1)) j++;
-                if (!Less(k, j)) break;
+                if (j < n && Greater(j, j + 1)) j++;
+                if (!Greater(k, j)) break;
                 Exch(k, j);
                 k = j;
             }
         }
 
-        /*
         public int CompareTo(Key other)
         {
             throw new NotImplementedException();
         }
-        */
 
         public IEnumerator<Key> GetEnumerator()
         {
@@ -232,8 +238,7 @@ namespace PriorityQueues
 
             public bool MoveNext()
             {
-                position++;
-                //return !copy.IsEmpty();
+                position++;                
                 return position < copy.Size();
             }
 
@@ -255,8 +260,7 @@ namespace PriorityQueues
                 get
                 {
                     try
-                    {
-                        // return PQ[position];
+                    {                        
                         return Keys[position];
                     }
                     catch (IndexOutOfRangeException)
