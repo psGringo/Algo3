@@ -42,8 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcyclicSP.cs" />
+    <Compile Include="DijkstraAllPairsSP.cs" />
+    <Compile Include="DijkstraSP.cs" />
     <Compile Include="DirectedEdge.cs" />
     <Compile Include="EdgeWeightedDigraph.cs" />
+    <Compile Include="IndexMinPQ.cs" />
+    <Compile Include="Cycle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

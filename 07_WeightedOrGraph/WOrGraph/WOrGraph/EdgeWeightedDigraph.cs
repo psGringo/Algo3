@@ -92,6 +92,22 @@ namespace WOrGraph
             }
             catch (Exception e) { Console.WriteLine("The process failed: {0}", e.ToString()); };
         }
+        public IEnumerable<DirectedEdge> GetEdges()
+        {
+            List<DirectedEdge> list = new List<DirectedEdge>();
+            for (int v = 0; v < V; v++)
+            {
+                foreach(DirectedEdge e in adj[v])
+                {
+                    list.Add(e);
+                }
+            }
+            return list;
+        }
+        public int GetVertices()
+        {
+            return V;
+        }
         public override string ToString()
         {            
             StringBuilder s = new StringBuilder();
