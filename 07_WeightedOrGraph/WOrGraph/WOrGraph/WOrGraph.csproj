@@ -51,6 +51,7 @@
     <Compile Include="Cycle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Topological.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
