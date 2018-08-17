@@ -21,8 +21,8 @@ namespace WOrGraph
             // Cycles
             EdgeWeightedDigraph G1 = new EdgeWeightedDigraph("tinyEWD.txt");
             EdgeWeightedDigraph G2 = new EdgeWeightedDigraph("tinyEWDAG.txt"); // Acyclic WOrGraph
-            Cycle c1 = new Cycle(G1);
-            Cycle c2 = new Cycle(G2);
+            CycleFinder c1 = new CycleFinder(G1);
+            CycleFinder c2 = new CycleFinder(G2);
             if (c1.IsCycle()) Console.WriteLine("Cycle in tinyEWD yes");
             else Console.WriteLine("Cycle in tinyEWD no");
             if (c2.IsCycle()) Console.WriteLine("Cycle in tinyEWDAG yes");
@@ -38,7 +38,26 @@ namespace WOrGraph
                 foreach (DirectedEdge e in path) Console.WriteLine(e.From() + " -> " + e.To());
             }
             else Console.WriteLine("no path from 5 to "+v);
-
+            // BellmanFord
+            EdgeWeightedDigraph G3 = new EdgeWeightedDigraph("tinyEWDn.txt");
+            BellmanFordSP b = new BellmanFordSP(G3, 0);
+            if (!b.IsNegativeCycle())
+            {
+                Queue<DirectedEdge> q = new Queue<DirectedEdge>(b.PathTo(7));
+                foreach (DirectedEdge e in q)
+                {
+                    Console.WriteLine(e.From() + " - > " + e.To());
+                }
+            }
+            else
+            {                 
+                Console.WriteLine("There is negative cycle");
+                Queue<DirectedEdge> q = new Queue<DirectedEdge>(b.GetNegativeCycle());
+                foreach (DirectedEdge e in q)
+                {
+                    Console.WriteLine(e.From() + " - > " + e.To());
+                }
+            }                            
             //Console.WriteLine(G.ToString());
             Console.ReadLine();
         }

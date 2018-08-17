@@ -42,13 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcyclicLP.cs" />
     <Compile Include="AcyclicSP.cs" />
+    <Compile Include="BellmanFordSP.cs" />
     <Compile Include="DijkstraAllPairsSP.cs" />
     <Compile Include="DijkstraSP.cs" />
     <Compile Include="DirectedEdge.cs" />
     <Compile Include="EdgeWeightedDigraph.cs" />
+    <Compile Include="EdgeWeightedDirectedCycle.cs" />
     <Compile Include="IndexMinPQ.cs" />
-    <Compile Include="Cycle.cs" />
+    <Compile Include="CycleFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Topological.cs" />

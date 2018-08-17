@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace WOrGraph
 {
-    class Cycle
+    class CycleFinder
     {
         private bool[] marked;
         private int[] edgeTo;
         private bool[] onStack;
         private Stack<int> cycle;
-        public Cycle(EdgeWeightedDigraph G)
+        public CycleFinder(EdgeWeightedDigraph G)
         {
             marked = new bool[G.GetVertices()];
             onStack = new bool[G.GetVertices()];
@@ -56,7 +56,7 @@ namespace WOrGraph
             return cycle != null;
         }
         // --getCycle
-        public Stack<int> GetCycle()
+        public IEnumerable<int> GetCycle()
         {
             return cycle;
         }

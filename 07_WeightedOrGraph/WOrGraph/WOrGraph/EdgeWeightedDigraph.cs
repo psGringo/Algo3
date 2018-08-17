@@ -42,6 +42,17 @@ namespace WOrGraph
             ValidateVertex(v);
             return Indegree[v];
         }
+        //
+        public EdgeWeightedDigraph(int V)
+        {
+            if (V < 0) throw new ArgumentException("Number of vertices in a Digraph must be nonnegative");
+            this.V = V;
+            this.E = 0;
+            this.Indegree = new int[V];
+            adj = new List<DirectedEdge>[V]; //(List<DirectedEdge>[])new Bag[V];
+            for (int v = 0; v < V; v++)
+                adj[v] = new List<DirectedEdge>();
+        }
         // -- init Graph from file        
         public EdgeWeightedDigraph(string filepath)
         {
